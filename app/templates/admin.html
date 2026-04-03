@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-panel">
+
+    <h3 class="text-center mb-4">🧑‍💼 Admin Panel</h3>
+
+    <div class="row g-3">
+
+        <div class="col-md-6">
+            <a href="/admin/users" class="menu-card">
+                👥 <h5>User Management</h5>
+                <p>Manage users, roles & access</p>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="/admin/records" class="menu-card">
+                💰 <h5>Financial Records</h5>
+                <p>Create & manage transactions</p>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="/admin/insights" class="menu-card">
+                📊 <h5>Dashboard & Insights</h5>
+                <p>View analytics and summaries</p>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="/admin/filter" class="menu-card">
+                🔍 <h5>Filtering & Search</h5>
+                <p>Advanced data filtering</p>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+.admin-panel {
+    max-width: 900px;
+    margin: auto;
+}
+
+.menu-card {
+    display: block;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #0b1f3a;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+.menu-card h5 {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.menu-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+</style>
+
+{% endblock %}

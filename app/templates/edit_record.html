@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Record</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="{{ record.amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select class="form-select" id="type" name="type" required>
+                <option value="income" {% if record.type == 'income' %}selected{% endif %}>Income</option>
+                <option value="expense" {% if record.type == 'expense' %}selected{% endif %}>Expense</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" id="category" name="category" value="{{ record.category }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="date" name="date" value="{{ record.date.strftime('%Y-%m-%d') }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea class="form-control" id="notes" name="notes">{{ record.notes }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Record</button>
+        <a href="{{ url_for('view_record') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

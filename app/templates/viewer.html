@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2>Dashboard (Viewer)</h2>
+
+    <!-- Summary Cards -->
+    <div class="stats">
+        <div class="stat-box">
+            <h4>Total Income</h4>
+            <p class="positive">₹ {{ total_income }}</p>
+        </div>
+
+        <div class="stat-box">
+            <h4>Total Expenses</h4>
+            <p class="negative">₹ {{ total_expense }}</p>
+        </div>
+
+        <div class="stat-box">
+            <h4>Balance</h4>
+            <p>₹ {{ balance }}</p>
+        </div>
+    </div>
+
+    <!-- Records -->
+    <div class="card">
+        <h3>Recent Transactions</h3>
+
+        <table>
+            <tr>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Date</th>
+            </tr>
+
+            {% for r in records %}
+            <tr>
+                <td>{{ r.amount }}</td>
+                <td>{{ r.type }}</td>
+                <td>{{ r.category }}</td>
+                <td>{{ r.date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

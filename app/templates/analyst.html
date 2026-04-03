@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2>Dashboard (Analyst)</h2>
+
+    <!-- Summary -->
+    <div class="stats">
+        <div class="stat-box">
+            <h4>Total Income</h4>
+            <p class="positive">₹ {{ total_income }}</p>
+        </div>
+
+        <div class="stat-box">
+            <h4>Total Expenses</h4>
+            <p class="negative">₹ {{ total_expense }}</p>
+        </div>
+
+        <div class="stat-box">
+            <h4>Balance</h4>
+            <p>₹ {{ balance }}</p>
+        </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="card">
+        <h3>Filter Records</h3>
+
+        <form method="GET">
+            <input type="date" name="date">
+            <input type="text" name="category" placeholder="Category">
+            <select name="type">
+                <option value="">All</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+
+            <button class="btn btn-primary">Apply</button>
+        </form>
+    </div>
+
+    <!-- Insights -->
+    <div class="card">
+        <h3>Insights</h3>
+        <p>📊 Category-wise totals</p>
+        <p>📈 Monthly trends</p>
+        <p>🕒 Recent activity</p>
+    </div>
+
+    <!-- Records Table -->
+    <div class="card">
+        <h3>Transactions</h3>
+
+        <table>
+            <tr>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Date</th>
+            </tr>
+
+            {% for r in records %}
+            <tr>
+                <td>{{ r.amount }}</td>
+                <td>{{ r.type }}</td>
+                <td>{{ r.category }}</td>
+                <td>{{ r.date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

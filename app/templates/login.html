@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="center-container">
+    <div class="card large-card">
+
+        <h2>Login</h2>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div>
+                {{ form.email.label }}<br>
+                {{ form.email(class="input") }}
+            </div>
+
+            <div>
+                {{ form.password.label }}<br>
+                {{ form.password(class="input") }}
+            </div>
+
+            <br>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

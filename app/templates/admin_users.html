@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3 class="mb-4">👥 User Management</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+
+        <!-- 🎭 ROLE CHANGE -->
+        <td>
+            <form action="/admin/change_role/{{ user.id }}" method="POST">
+                <select name="role" onchange="this.form.submit()">
+                    <option value="viewer" {% if user.role.name == "viewer" %}selected{% endif %}>Viewer</option>
+                    <option value="analyst" {% if user.role.name == "analyst" %}selected{% endif %}>Analyst</option>
+                </select>
+            </form>
+        </td>
+
+        <!-- 🔄 STATUS -->
+        <td>
+            {% if user.is_active %}
+                <span class="text-success">Active</span>
+            {% else %}
+                <span class="text-danger">Inactive</span>
+            {% endif %}
+        </td>
+
+        <!-- ⚙️ ACTIONS -->
+        <td>
+            <a href="/admin/toggle/{{ user.id }}">Toggle</a> |
+            <a href="/admin/delete_user/{{ user.id }}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
