@@ -9,6 +9,30 @@ from datetime import datetime
 from collections import OrderedDict
 from datetime import datetime
 
+def setup_defaults():
+        roles = ["viewer", "analyst", "admin"]
+
+        for r in roles:
+            existing_role = Role.query.filter_by(name=r).first()
+            if not existing_role:
+                db.session.add(Role(name=r))
+
+        db.session.commit()
+        admin_role = Role.query.filter_by(name="admin").first()
+
+        admin_user = User.query.filter_by(email="admin@gmail.com").first()
+
+        if not admin_user:
+            admin = User(
+                name="Admin",
+                email="admin@gmail.com",
+                password=generate_password_hash("admin123"),
+                role_id=admin_role.id,
+                is_active=True
+            )
+
+            db.session.add(admin)
+            db.session.commit()
 def init_routes(app):
 
     @app.route("/")
@@ -31,32 +55,44 @@ def init_routes(app):
             return redirect(url_for("login"))
         return render_template("register.html", form = form)
     
+   
+    
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
     
-    @app.route("/login", methods = ["POST","GET"])
+    @app.route("/login", methods=["POST", "GET"])
     def login():
         form = LoginForm()
+
         if form.validate_on_submit():
+
             user = User.query.filter_by(email=form.email.data).first()
-            
+
             if not user:
                 flash("User not found!", "error")
                 return redirect(url_for("login"))
-        
+
             if not check_password_hash(user.password, form.password.data):
                 flash("Incorrect password!", "error")
                 return redirect(url_for("login"))
+
             if not user.is_active:
                 flash("Account is inactive. Contact admin.", "warning")
                 return redirect(url_for("login"))
 
-                
+            if not user.role:   
+                flash("User role not assigned!", "danger")
+                return redirect(url_for("login"))
+
             session["user_id"] = user.id
             session["role"] = user.role.name
+
             login_user(user)
-            flash(f"Welcome back,{user.name} 👋!", "success")
+
+            flash(f"Welcome back, {user.name} 👋!", "success")
+
             if user.role.name.lower() == "admin":
                 return redirect(url_for("admin_dashboard"))
 
@@ -65,10 +101,9 @@ def init_routes(app):
 
             else:
                 return redirect(url_for("viewer_dashboard"))
-          
+
+        return render_template("login.html", form=form)
         
-        return render_template("login.html",form = form)
-    
 
     def role_required(*allowed_roles):
         def wrapper(func):
