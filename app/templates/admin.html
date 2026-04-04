@@ -2,74 +2,161 @@
 
 {% block content %}
 
+<!-- Navbar -->
+
+
 <div class="admin-panel">
 
-    <h3 class="text-center mb-4">🧑‍💼 Admin Panel</h3>
+    <h3 class="text-center mb-5">🧑‍💼 Admin Panel</h3>
 
-    <div class="row g-3">
+    <div class="grid-container">
 
-        <div class="col-md-6">
-            <a href="/admin/users" class="menu-card">
-                👥 <h5>User Management</h5>
-                <p>Manage users, roles & access</p>
-            </a>
-        </div>
+        <a href="/admin/users" class="menu-card">
+            <div class="icon-circle">👥</div>
+            <h5>User Management</h5>
+            <p>Manage users, roles & access</p>
+        </a>
 
-        <div class="col-md-6">
-            <a href="/admin/records" class="menu-card">
-                💰 <h5>Financial Records</h5>
-                <p>Create & manage transactions</p>
-            </a>
-        </div>
+        <a href="/admin/records" class="menu-card">
+            <div class="icon-circle">💰</div>
+            <h5>Financial Records</h5>
+            <p>Create & manage transactions</p>
+        </a>
 
-        <div class="col-md-6">
-            <a href="/admin/insights" class="menu-card">
-                📊 <h5>Dashboard & Insights</h5>
-                <p>View analytics and summaries</p>
-            </a>
-        </div>
+        <a href="/admin/insights" class="menu-card">
+            <div class="icon-circle">📊</div>
+            <h5>Dashboard & Insights</h5>
+            <p>View analytics and summaries</p>
+        </a>
 
-        <div class="col-md-6">
-            <a href="/admin/filter" class="menu-card">
-                🔍 <h5>Filtering & Search</h5>
-                <p>Advanced data filtering</p>
-            </a>
-        </div>
+        <a href="/admin/filter" class="menu-card">
+            <div class="icon-circle">🔍</div>
+            <h5>Filtering & Search</h5>
+            <p>Advanced data filtering</p>
+        </a>
 
     </div>
 
 </div>
 
 <style>
-.admin-panel {
-    max-width: 900px;
+/* Navbar */
+.admin-navbar {
+    background: #4facfe; /* blue gradient */
+    padding: 15px 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.nav-container {
+    max-width: 1000px;
     margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+/* Admin Panel */
+.admin-panel {
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0b1f3a;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
 }
 
 .menu-card {
-    display: block;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #e6f2ff;
+    padding: 50px 30px;
+    border-radius: 20px;
     text-decoration: none;
     color: #0b1f3a;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    text-align: center;
+    min-height: 220px;
+}
+
+.menu-card .icon-circle {
+    width: 90px;
+    height: 90px;
+    background: #4facfe;
+    color: white;
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 20px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-    transition: 0.2s;
 }
 
 .menu-card h5 {
-    margin-top: 10px;
+    margin: 15px 0 10px;
     font-weight: 600;
+    font-size: 20px;
 }
 
 .menu-card p {
-    font-size: 14px;
-    color: #666;
+    font-size: 15px;
+    color: #333;
 }
 
 .menu-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    transform: translateY(-10px);
+    box-shadow: 0 16px 35px rgba(0,0,0,0.15);
+    background: #d0e7ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+    }
 }
 </style>
 

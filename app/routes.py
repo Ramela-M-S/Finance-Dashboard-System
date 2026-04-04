@@ -1,3 +1,6 @@
+
+    
+
 from flask import render_template,request,redirect,url_for, session, flash
 from flask_login import login_user, current_user
 from .models import User,Role,Record
@@ -5,12 +8,14 @@ from .extensions import db,login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from .forms import LoginForm, RegisterForm
 from datetime import datetime
+from collections import OrderedDict
+from datetime import datetime
 
 def init_routes(app):
 
     @app.route("/")
     def home():
-        return render_template("home.html")
+        return render_template("base.html")
     
     @app.route("/register", methods = ["POST","GET"])
     def register():
@@ -19,9 +24,9 @@ def init_routes(app):
             
             viewer_role = Role.query.filter_by(name="viewer").first()
             hashed_passwd = generate_password_hash(form.password.data)
-            role = Role.query.get(form.role.data)
+           
             user = User(name = form.name.data, email = form.email.data, password = hashed_passwd, role_id = viewer_role.id)
-            user.role = role
+            
             db.session.add(user)
             db.session.commit()
             flash("Registration successful! Please login.", "success")
@@ -152,12 +157,14 @@ def init_routes(app):
     @app.route("/admin/records")
     @role_required("admin")
     def view_record():
+        users = User.query.all()
         records = Record.query.order_by(Record.date.desc()).all()
-        return render_template("admin_records.html", records=records)
+        return render_template("admin_records.html", records=records, users = users)
 
     @app.route("/add_record", methods=["POST"])
     @role_required("admin")
     def add_record():
+        users = User.query.filter(User.role_id != current_user.role_id).all()
 
         record = Record(
             amount=float(request.form["amount"]),
@@ -165,13 +172,13 @@ def init_routes(app):
             category=request.form["category"],
             date=datetime.strptime(request.form["date"], "%Y-%m-%d"),
             notes=request.form["notes"],
-            user_id=current_user.id
+            user_id=int(request.form["user_id"])
         )
 
         db.session.add(record)
         db.session.commit()
 
-        flash("Record added!", "success")
+        flash("Record added successfully!", "success")
         return redirect(url_for("view_record"))
     
     @app.route("/delete/<int:id>",methods = ["POST"])
@@ -205,42 +212,97 @@ def init_routes(app):
     @app.route("/admin/insights")
     @role_required("admin")
     def admin_insights():
-        income_rec = Record.query.filter_by(type = "salary").all()
-        tot_in = 0
-        tot_exp = 0
-        for rec in income_rec:
-            tot_in+=rec.amount
+    # Calculate total income
+        income_rec = Record.query.filter_by(type="income").all()
+        tot_in = sum(rec.amount for rec in income_rec)
 
-        exp_rec = Record.query.filter_by(type = "expense").all()
-        for rec in exp_rec:
-            tot_exp+=rec.amount
+        # Calculate total expenses
+        exp_rec = Record.query.filter_by(type="expense").all()
+        tot_exp = sum(rec.amount for rec in exp_rec)
 
+        # Net balance
         net_balance = tot_in - tot_exp
 
-        all_records = Record.query.all()  # get everything
+        # All records for other calculations
+        all_records = Record.query.all()
 
+        # Category-wise totals
         category_totals = {}
         for record in all_records:
-            if record.category in category_totals:
-                category_totals[record.category] += record.amount
-            else:
-                category_totals[record.category] = record.amount
+            category_totals[record.category] = category_totals.get(record.category, 0) + record.amount
+
+        # Recent transactions
         recent_records = Record.query.order_by(Record.date.desc()).limit(10).all()
 
-        monthly_income = {}
-        monthly_expense = {}
+        # Monthly trends
+        months = ["January","February","March","April","May","June",
+          "July","August","September","October","November","December"]
+        monthly_income = OrderedDict((m, 0) for m in months)
+        monthly_expense = OrderedDict((m, 0) for m in months)
         for r in all_records:
             month = r.date.strftime("%B")
-            if r.type == "income":
+            r_type = r.type.lower()  # abbreviated month to match keys
+            if r_type == "income":
                 if month not in monthly_income:
                     monthly_income[month] = 0
                 monthly_income[month] += r.amount
-            elif r.type == "expense":
-                if month not in monthly_expense:
+            elif r_type == "expense":
+                if month not in monthly_income:
                     monthly_expense[month] = 0
                 monthly_expense[month] += r.amount
-        
-        return render_template("admin_insights.html", total_income=tot_in, total_expenses=tot_exp,
-        net_balance=net_balance, category_totals=category_totals, recent_records=recent_records, monthly_income=monthly_income,
-    monthly_expense=monthly_expense)
+        print("Monthly exepenses:",monthly_expense)
+        print("Monthly income:",monthly_income)
+        return render_template(
+            "admin_insights.html", 
+            total_income=tot_in, 
+            total_expenses=tot_exp,
+            net_balance=net_balance, 
+            category_totals=category_totals, 
+            recent_records=recent_records, 
+            monthly_income=monthly_income,
+            monthly_expense=monthly_expense
+        )
     
+    #---Filter & Search---#
+    @app.route("/admin/filter", methods=["GET", "POST"])
+    def admin_filter():
+        # initial values
+        records = Record.query.order_by(Record.date.desc()).all()
+        categories = [c[0] for c in db.session.query(Record.category).distinct()]
+
+        selected_type = "all"
+        selected_category = "all"
+        start_date = ""
+        end_date = ""
+
+        if request.method == "POST":
+            selected_type = request.form.get("type", "all")
+            selected_category = request.form.get("category", "all")
+            start_date = request.form.get("start_date", "")
+            end_date = request.form.get("end_date", "")
+
+            query = Record.query
+
+            if selected_type != "all":
+                query = query.filter_by(type=selected_type)
+
+            if selected_category != "all":
+                query = query.filter_by(category=selected_category)
+
+            if start_date:
+                query = query.filter(Record.date >= start_date)
+
+            if end_date:
+                query = query.filter(Record.date <= end_date)
+
+            records = query.order_by(Record.date.desc()).all()
+
+        return render_template(
+            "admin_filter.html",
+            records=records,
+            categories=categories,
+            selected_type=selected_type,
+            selected_category=selected_category,
+            start_date=start_date,
+            end_date=end_date
+        )

@@ -2,90 +2,295 @@
 
 {% block content %}
 
-<h3 class="mb-4">💰 Financial Records</h3>
+<div class="financial-container">
 
-<!-- ➕ Add Record -->
-<div class="card p-3 mb-4 shadow-sm">
+    <h3 class="mb-4">💰 Financial Records</h3>
+
+    <!-- ➕ Add Record -->
+    <div class="card add-record-card">
     <h5 class="mb-3">Add Record</h5>
-
     <form action="/add_record" method="POST">
-        <div class="row">
+        <div class="row g-3">
 
-            <div class="col-md-3">
-                <input type="number" step="0.01" name="amount" class="form-control" placeholder="Amount" required>
-            </div>
-
+            <!-- User -->
             <div class="col-md-2">
-                <select name="type" class="form-control">
-                    <option value="Income">Income</option>
-                    <option value="Expense">Expense</option>
+                <select name="user_id" class="form-input" required>
+                    <option value="">Select User</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
+            <br>
 
+            <!-- Amount -->
             <div class="col-md-2">
-                <input type="text" name="category" class="form-control" placeholder="Category">
+                <input type="number" step="0.01" name="amount" class="form-input" placeholder="Amount" required>
             </div>
+            <br>
 
+            <!-- Type -->
             <div class="col-md-2">
-                <input type="date" name="date" class="form-control" required>
+                <select name="type" class="form-input">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
             </div>
-
+            <br>
+            <!-- Category -->
             <div class="col-md-2">
-                <input type="text" name="notes" class="form-control" placeholder="Notes">
+                <input type="text" name="category" class="form-input" placeholder="Category">
             </div>
-
+            <br>
+            <!-- Date -->
+            <div class="col-md-2">
+                <input type="date" name="date" class="form-input" required>
+            </div>
+            <br>
+            <!-- Notes -->
             <div class="col-md-1">
-                <button type="submit" class="btn btn-success w-100">Add</button>
+                <input type="text" name="notes" class="form-input" placeholder="Notes">
+            </div>
+            <br>
+            <!-- Submit -->
+            <div class="col-md-1 d-grid">
+                <button type="submit" class="btn btn-primary">Add</button>
             </div>
 
         </div>
-    </form>
+</form>
+
+    
 </div>
 
-<!-- 📋 Records Table -->
-<div class="card p-3 shadow-sm">
-    <h5 class="mb-3">All Records</h5>
+<style>
+/* compact, box-style inputs for Add Record form */
+.add-record-card .form-input {
+    padding: 4px 10px !important;   /* smaller vertical padding */
+    height: 32px !important;        /* consistent compact height */
+    border-radius: 6px !important;  /* neat box corners */
+    box-sizing: border-box !important; /* ensures padding included in height */
+    font-size: 14px !important;     /* text size */
+}
+.add-record-card {
+    background: #f9fbff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
 
-    <table class="table table-bordered table-hover">
-        <tr>
-            <th>Amount</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Date</th>
-            <th>Notes</th>
-            <th>Actions</th>
-        </tr>
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
 
-        {% for record in records %}
-        <tr>
-            <td>₹ {{ record.amount }}</td>
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #0b1f3a;
+}
 
-            <td>
-                {% if record.type == "Income" %}
-                    <span class="text-success">Income</span>
-                {% else %}
-                    <span class="text-danger">Expense</span>
-                {% endif %}
-            </td>
+.form-input {
+    padding: 4px 10px;       /* smaller vertical padding */
+    border-radius: 8px;
+    border: 1px solid #c0d6f5;
+    font-size: 14px;
+    height: 30px;            /* compact height */
+    transition: all 0.2s ease;
+    box-sizing: border-box;  /* ensures padding doesn't add extra height */
+}
 
-            <td>{{ record.category }}</td>
-            <td>{{ record.date.strftime("%Y-%m-%d") }}</td>
-            <td>{{ record.notes }}</td>
+.form-input:focus {
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 8px rgba(79,172,254,0.4);
+}
 
-            <td>
-                <a href="/edit/{{ record.id }}" class="btn btn-sm btn-warning">Edit</a>
+.btn-primary {
+    background: #4facfe;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-                <form action="/delete/{{ record.id }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Delete this record?')">
-                        Delete
-                    </button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+.btn-primary:hover {
+    background: #3a9eee;
+}
+</style>
+        </form>
+    </div>
+
+    <!-- 📋 Records Table -->
+    <div class="card records-card">
+        <h5 class="mb-3">All Records</h5>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.user.name }}</td>
+                    <td>₹ {{ record.amount }}</td>
+                    <td>
+                        {% if record.type == "Income" %}
+                            <span class="badge income">Income</span>
+                        {% else %}
+                            <span class="badge expense">Expense</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ record.category }}</td>
+                    <td>{{ record.date.strftime("%Y-%m-%d") }}</td>
+                    <td>{{ record.notes }}</td>
+                    <td>
+                        <a href="/edit/{{ record.id }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="/edit/{{ record.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-warning"
+                                onclick="return confirm('Edit this record?')">Delete</button>
+                        </form>
+                        <form action="/delete/{{ record.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Delete this record?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
 
 </div>
+
+<style>
+.financial-container {
+    max-width: 1100px;
+    margin: 30px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page header */
+h3 {
+    font-weight: 700;
+    color: #0b1f3a;
+}
+
+/* Cards */
+.card {
+    background: #f9fbff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* Add Record Form */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form-input {
+    flex: 1 1 120px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #c0d6f5;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 8px rgba(79,172,254,0.4);
+}
+
+.btn-primary {
+    background: #4facfe;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #3a9eee;
+}
+
+/* Styled Table */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    background: #ffffff;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.styled-table th {
+    background: #4facfe;
+    color: white;
+    font-weight: 600;
+}
+
+.styled-table tbody tr {
+    transition: background 0.3s ease;
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background: #f1f7ff;
+}
+
+.styled-table tbody tr:hover {
+    background: #d0e7ff;
+}
+
+/* Badges */
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+}
+
+.badge.income {
+    background: #28a745;
+}
+
+.badge.expense {
+    background: #dc3545;
+}
+
+/* Action buttons */
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+</style>
 
 {% endblock %}

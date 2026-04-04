@@ -17,6 +17,9 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey("role.id"))
     role = db.relationship("Role")
 
+    records = db.relationship("Record", back_populates="user", cascade="all, delete-orphan")
+
+
     def __repr__(self):
         return f"<User {self.email}>"
     
@@ -27,4 +30,9 @@ class Record(db.Model):
     category = db.Column(db.String(50))
     date = db.Column(db.Date, nullable=False)
     notes = db.Column(db.String(200))
+
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", back_populates="records")
+

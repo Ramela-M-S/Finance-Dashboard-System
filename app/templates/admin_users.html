@@ -2,48 +2,164 @@
 
 {% block content %}
 
-<h3 class="mb-4">👥 User Management</h3>
+<div class="user-management-container">
+    <h3 class="mb-4">👥 User Management</h3>
 
-<table class="table table-bordered">
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
 
-    {% for user in users %}
-    <tr>
-        <td>{{ user.name }}</td>
-        <td>{{ user.email }}</td>
+                <!-- 🎭 ROLE CHANGE -->
+                <td>
+                    <form action="/admin/change_role/{{ user.id }}" method="POST">
+                        <select name="role" class="role-select" onchange="this.form.submit()">
+                            <option value="viewer" {% if user.role.name == "viewer" %}selected{% endif %}>Viewer</option>
+                            <option value="analyst" {% if user.role.name == "analyst" %}selected{% endif %}>Analyst</option>
+                        </select>
+                    </form>
+                </td>
 
-        <!-- 🎭 ROLE CHANGE -->
-        <td>
-            <form action="/admin/change_role/{{ user.id }}" method="POST">
-                <select name="role" onchange="this.form.submit()">
-                    <option value="viewer" {% if user.role.name == "viewer" %}selected{% endif %}>Viewer</option>
-                    <option value="analyst" {% if user.role.name == "analyst" %}selected{% endif %}>Analyst</option>
-                </select>
-            </form>
-        </td>
+                <!-- 🔄 STATUS -->
+                <td>
+                    {% if user.is_active %}
+                        <span class="status active">Active</span>
+                    {% else %}
+                        <span class="status inactive">Inactive</span>
+                    {% endif %}
+                </td>
 
-        <!-- 🔄 STATUS -->
-        <td>
-            {% if user.is_active %}
-                <span class="text-success">Active</span>
-            {% else %}
-                <span class="text-danger">Inactive</span>
-            {% endif %}
-        </td>
+                <!-- ⚙️ ACTIONS -->
+                <td>
+                    <a href="/admin/toggle/{{ user.id }}" class="action-btn toggle-btn">Toggle</a>
+                    <a href="/admin/delete_user/{{ user.id }}" class="action-btn delete-btn">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-        <!-- ⚙️ ACTIONS -->
-        <td>
-            <a href="/admin/toggle/{{ user.id }}">Toggle</a> |
-            <a href="/admin/delete_user/{{ user.id }}">Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<style>
+.user-management-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h3 {
+    font-weight: 700;
+    color: #0b1f3a;
+    text-align: left;
+}
+
+/* Table Styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    background: #f9fbff;
+}
+
+.styled-table th, .styled-table td {
+    padding: 14px 20px;
+    text-align: left;
+}
+
+.styled-table th {
+    background: #4facfe;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.styled-table tbody tr {
+    transition: background 0.3s ease;
+    cursor: default;
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background: #edf6ff;
+}
+
+.styled-table tbody tr:hover {
+    background: #d0e7ff;
+}
+
+/* Role dropdown */
+.role-select {
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #c0d6f5;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.role-select:hover {
+    border-color: #4facfe;
+}
+
+/* Status badges */
+.status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+}
+
+.status.active {
+    background: #28a745;
+}
+
+.status.inactive {
+    background: #dc3545;
+}
+
+/* Action buttons */
+.action-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    margin-right: 6px;
+    display: inline-block;
+}
+
+.toggle-btn {
+    background: #ffc107;
+    color: #0b1f3a;
+}
+
+.toggle-btn:hover {
+    background: #e0a800;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #b02a37;
+}
+</style>
 
 {% endblock %}
