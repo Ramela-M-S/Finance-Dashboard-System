@@ -127,9 +127,11 @@
     </div>
 
     <!-- 📋 Records Table -->
-    <div class="card records-card">
-        <h5 class="mb-3">All Records</h5>
+<div class="card records-card">
+    <h5 class="mb-3">All Records</h5>
 
+    <!-- ✅ IMPORTANT: scroll wrapper -->
+    <div class="table-container">
         <table class="styled-table">
             <thead>
                 <tr>
@@ -142,27 +144,29 @@
                     <th>Actions</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for record in records %}
                 <tr>
                     <td>{{ record.user.name }}</td>
                     <td>₹ {{ record.amount }}</td>
+
                     <td>
-                        {% if record.type == "Income" %}
+                        {% if record.type == "income" %}
                             <span class="badge income">Income</span>
                         {% else %}
                             <span class="badge expense">Expense</span>
                         {% endif %}
                     </td>
+
                     <td>{{ record.category }}</td>
                     <td>{{ record.date.strftime("%Y-%m-%d") }}</td>
                     <td>{{ record.notes }}</td>
+
                     <td>
+                        <!-- ✅ FIXED: use link instead of POST for edit -->
                         <a href="/edit/{{ record.id }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="/edit/{{ record.id }}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-warning"
-                                onclick="return confirm('Edit this record?')">Delete</button>
-                        </form>
+
                         <form action="/delete/{{ record.id }}" method="POST" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-danger"
                                 onclick="return confirm('Delete this record?')">Delete</button>
@@ -172,7 +176,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
 
 </div>
@@ -184,65 +187,27 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Page header */
-h3 {
-    font-weight: 700;
-    color: #0b1f3a;
-}
-
-/* Cards */
+/* Card */
 .card {
-    background: #f9fbff;
+    background: white;
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 30px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
-/* Add Record Form */
-.form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+/* ✅ SCROLL FIX */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
 }
 
-.form-input {
-    flex: 1 1 120px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #c0d6f5;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: #4facfe;
-    box-shadow: 0 0 8px rgba(79,172,254,0.4);
-}
-
-.btn-primary {
-    background: #4facfe;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-    background: #3a9eee;
-}
-
-/* Styled Table */
+/* Table */
 .styled-table {
     width: 100%;
+    min-width: 800px; /* prevents cutting */
     border-collapse: collapse;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    background: #ffffff;
+    background: transparent;
 }
 
 .styled-table th, .styled-table td {
@@ -253,11 +218,6 @@ h3 {
 .styled-table th {
     background: #4facfe;
     color: white;
-    font-weight: 600;
-}
-
-.styled-table tbody tr {
-    transition: background 0.3s ease;
 }
 
 .styled-table tbody tr:nth-child(even) {
@@ -285,7 +245,7 @@ h3 {
     background: #dc3545;
 }
 
-/* Action buttons */
+/* Buttons */
 .btn-sm {
     padding: 5px 10px;
     font-size: 12px;

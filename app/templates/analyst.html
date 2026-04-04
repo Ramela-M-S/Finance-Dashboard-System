@@ -2,76 +2,151 @@
 
 {% block content %}
 
-<div class="container">
+<!-- Navbar -->
 
-    <h2>Dashboard (Analyst)</h2>
 
-    <!-- Summary -->
-    <div class="stats">
-        <div class="stat-box">
-            <h4>Total Income</h4>
-            <p class="positive">₹ {{ total_income }}</p>
-        </div>
+<div class="admin-panel">
 
-        <div class="stat-box">
-            <h4>Total Expenses</h4>
-            <p class="negative">₹ {{ total_expense }}</p>
-        </div>
+    <h3 class="text-center mb-5">🧑‍💼 Admin Panel</h3>
 
-        <div class="stat-box">
-            <h4>Balance</h4>
-            <p>₹ {{ balance }}</p>
-        </div>
-    </div>
+    <div class="grid-container">
 
-    <!-- Filter -->
-    <div class="card">
-        <h3>Filter Records</h3>
 
-        <form method="GET">
-            <input type="date" name="date">
-            <input type="text" name="category" placeholder="Category">
-            <select name="type">
-                <option value="">All</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
+        <a href="/admin/insights" class="menu-card">
+            <div class="icon-circle">📊</div>
+            <h5>Dashboard & Insights</h5>
+            <p>View analytics and summaries</p>
+        </a>
 
-            <button class="btn btn-primary">Apply</button>
-        </form>
-    </div>
+        <a href="/admin/filter" class="menu-card">
+            <div class="icon-circle">🔍</div>
+            <h5>Filtering & Search</h5>
+            <p>Advanced data filtering</p>
+        </a>
 
-    <!-- Insights -->
-    <div class="card">
-        <h3>Insights</h3>
-        <p>📊 Category-wise totals</p>
-        <p>📈 Monthly trends</p>
-        <p>🕒 Recent activity</p>
-    </div>
-
-    <!-- Records Table -->
-    <div class="card">
-        <h3>Transactions</h3>
-
-        <table>
-            <tr>
-                <th>Amount</th>
-                <th>Type</th>
-                <th>Category</th>
-                <th>Date</th>
-            </tr>
-
-            {% for r in records %}
-            <tr>
-                <td>{{ r.amount }}</td>
-                <td>{{ r.type }}</td>
-                <td>{{ r.category }}</td>
-                <td>{{ r.date }}</td>
-            </tr>
-            {% endfor %}
-        </table>
     </div>
 
 </div>
+
+<style>
+/* Navbar */
+.admin-navbar {
+    background: #4facfe; /* blue gradient */
+    padding: 15px 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.nav-container {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+/* Admin Panel */
+.admin-panel {
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0b1f3a;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.menu-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #e6f2ff;
+    padding: 50px 30px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #0b1f3a;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    text-align: center;
+    min-height: 220px;
+}
+
+.menu-card .icon-circle {
+    width: 90px;
+    height: 90px;
+    background: #4facfe;
+    color: white;
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.menu-card h5 {
+    margin: 15px 0 10px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.menu-card p {
+    font-size: 15px;
+    color: #333;
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 35px rgba(0,0,0,0.15);
+    background: #d0e7ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+</style>
 
 {% endblock %}

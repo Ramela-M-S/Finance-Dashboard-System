@@ -1,6 +1,4 @@
 
-    
-
 from flask import render_template,request,redirect,url_for, session, flash
 from flask_login import login_user, current_user
 from .models import User,Role,Record
@@ -72,13 +70,13 @@ def init_routes(app):
         return render_template("login.html",form = form)
     
 
-    def role_required(required_role):
+    def role_required(*allowed_roles):
         def wrapper(func):
             def decorated(*args, **kwargs):
                 if "role" not in session:
                     return redirect(url_for("login"))
 
-                if session["role"] != required_role:
+                if session["role"] not in allowed_roles:
                     flash("Access denied!", "error")
                     return redirect(url_for("home"))
 
@@ -88,18 +86,6 @@ def init_routes(app):
         return wrapper
 
 #-----Dashboard-------#
-
-    @app.route("/viewer")
-    @role_required("viewer")
-    def viewer_dashboard():
-        return render_template("viewer.html")
-
-
-    @app.route("/analyst")
-    @role_required("analyst")
-    def analyst_dashboard():
-        return render_template("analyst.html")
-
 
     @app.route("/admin")
     @role_required("admin")
@@ -210,7 +196,7 @@ def init_routes(app):
         return render_template("edit_record.html", record=record)
     
     @app.route("/admin/insights")
-    @role_required("admin")
+    @role_required("admin","analyst")
     def admin_insights():
     # Calculate total income
         income_rec = Record.query.filter_by(type="income").all()
@@ -265,6 +251,7 @@ def init_routes(app):
     
     #---Filter & Search---#
     @app.route("/admin/filter", methods=["GET", "POST"])
+    @role_required("admin","analyst")
     def admin_filter():
         # initial values
         records = Record.query.order_by(Record.date.desc()).all()
@@ -306,3 +293,42 @@ def init_routes(app):
             start_date=start_date,
             end_date=end_date
         )
+    
+
+#---Analyst---#
+
+    @app.route("/analyst")
+    @role_required("analyst")
+    def analyst_dashboard():
+
+        if not current_user.is_authenticated:
+            return redirect(url_for("login"))
+
+        
+        return render_template("analyst.html")
+
+#---Viewer---#
+
+    @app.route("/viewer")
+    @role_required("viewer")
+    def viewer_dashboard():
+        user_id = session["user_id"]
+        records = Record.query.filter_by(user_id=user_id).all()
+        total_income = 0
+        total_expense = 0
+
+        for r in records:
+            if r.type == "income":
+                total_income += r.amount
+            else:
+                total_expense += r.amount
+        balance = total_income - total_expense
+        return render_template(
+            "viewer.html",
+            records=records,
+            total_income=total_income,
+            total_expense=total_expense,
+            balance=balance
+        )
+        
+
