@@ -37,7 +37,7 @@ def init_routes(app):
 
     @app.route("/")
     def home():
-        return render_template("base.html")
+        return render_template("home.html")
     
     @app.route("/register", methods = ["POST","GET"])
     def register():
@@ -182,25 +182,47 @@ def init_routes(app):
         records = Record.query.order_by(Record.date.desc()).all()
         return render_template("admin_records.html", records=records, users = users)
 
-    @app.route("/add_record", methods=["POST"])
+    @app.route("/add_record", methods=["GET","POST"])
     @role_required("admin")
     def add_record():
         users = User.query.filter(User.role_id != current_user.role_id).all()
 
-        record = Record(
-            amount=float(request.form["amount"]),
-            type=request.form["type"],
-            category=request.form["category"],
-            date=datetime.strptime(request.form["date"], "%Y-%m-%d"),
-            notes=request.form["notes"],
-            user_id=int(request.form["user_id"])
-        )
+        if request.method == "POST":
+            # Get the form fields safely
+            try:
+                amount = request.form.get("amount")
+                user_id = request.form.get("user_id")
+                record_type = request.form.get("type")
+                category = request.form.get("category")
+                date_str = request.form.get("date")
+                notes = request.form.get("notes")
 
-        db.session.add(record)
-        db.session.commit()
+                if not all([amount, user_id, record_type, date_str]):
+                    flash("Please fill all required fields.", "warning")
+                    return redirect(url_for("view_record"))
 
-        flash("Record added successfully!", "success")
+                record = Record(
+                    amount=float(amount),
+                    type=record_type,
+                    category=category,
+                    date=datetime.strptime(date_str, "%Y-%m-%d"),
+                    notes=notes,
+                    user_id=int(user_id)
+                )
+
+                db.session.add(record)
+                db.session.commit()
+
+                flash("Record added successfully!", "success")
+            except Exception as e:
+                flash(f"Error adding record: {str(e)}", "danger")
+
+            return redirect(url_for("view_record"))
+
+        # If GET request, just redirect or render a page if needed
         return redirect(url_for("view_record"))
+
+
     
     @app.route("/delete/<int:id>",methods = ["POST"])
     @role_required("admin")
@@ -285,7 +307,7 @@ def init_routes(app):
         )
     
     #---Filter & Search---#
-    @app.route("/admin/filter", methods=["GET", "POST"])
+    @app.route("/admin/filter", methods=[ "GET","POST"])
     @role_required("admin","analyst")
     def admin_filter():
         # initial values

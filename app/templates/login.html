@@ -5,26 +5,125 @@
 <div class="center-container">
     <div class="card large-card">
 
-        <h2>Login</h2>
+        <!-- Icon on top -->
+        <div class="icon-circle login-icon">
+            <i class="bi bi-lock-fill"></i>
+        </div>
 
-        <form method="POST">
+        <h2 class="card-title">Login</h2>
+        <p class="card-subtitle">Welcome back! Please enter your details.</p>
+
+        <form method="POST" class="login-form">
             {{ form.hidden_tag() }}
 
-            <div>
-                {{ form.email.label }}<br>
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
                 {{ form.email(class="input") }}
             </div>
 
-            <div>
-                {{ form.password.label }}<br>
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
                 {{ form.password(class="input") }}
             </div>
 
-            <br>
-            {{ form.submit(class="btn btn-primary") }}
+            {{ form.submit(class="btn btn-primary btn-login") }}
         </form>
+
+        <p class="signup-text">
+            Don't have an account? <a href="{{ url_for('register') }}">Sign up</a>
+        </p>
 
     </div>
 </div>
+
+<style>
+/* Card adjustments */
+.large-card {
+    max-width: 400px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 16px 35px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.large-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* Icon for login */
+.login-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Titles */
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1E3A8A;
+    margin-bottom: 5px;
+}
+
+.card-subtitle {
+    font-size: 0.95rem;
+    color: #64748B;
+    margin-bottom: 25px;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Login button */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+}
+
+/* Signup text */
+.signup-text {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #475569;
+    text-align: center;
+}
+
+.signup-text a {
+    color: #3B82F6;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .large-card {
+        padding: 30px 20px;
+    }
+    .login-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 32px;
+    }
+    .card-title {
+        font-size: 1.6rem;
+    }
+}
+</style>
 
 {% endblock %}

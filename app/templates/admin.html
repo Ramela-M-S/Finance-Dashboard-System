@@ -2,15 +2,9 @@
 
 {% block content %}
 
-<!-- Navbar -->
-<br>
-<br>
-<br>
-<br>
-
 <div class="admin-panel">
 
-    
+    <h3>Admin Dashboard</h3>
 
     <div class="grid-container">
 
@@ -39,90 +33,86 @@
         </a>
 
     </div>
-
 </div>
 
 <style>
-/* Navbar */
-.admin-navbar {
-    background: #4facfe; /* blue gradient */
-    padding: 15px 0;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    /* Grid layout - default 4 cards in one row */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cards in one row on large screens */
+    gap: 30px;
 }
 
-.nav-container {
-    max-width: 1000px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Medium screens (tablet/laptop) - 2x2 */
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
 }
 
-.nav-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: white;
+/* Small screens (phones) - stack vertically */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* 1 card per row */
+    }
 }
-
-.nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-link {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 10px;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.nav-link:hover {
-    background: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
-}
-
-/* Admin Panel */
+/* Admin Panel Container */
 .admin-panel {
-    max-width: 1000px;
-    margin: 0 auto 40px;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h3 {
-    font-size: 32px;
+/* Title */
+.admin-panel h3 {
+    text-align: center;
+    font-size: 36px;
     font-weight: 700;
     color: #0b1f3a;
-    text-align: center;
-    margin-top: 30px;
+    margin-bottom: 60px;
 }
 
+/* Grid layout - all 4 cards visible on large screens */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
+    grid-template-columns: repeat(4, 1fr); /* 4 cards in one row */
+    gap: 30px;
 }
 
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 up, 2 down on smaller desktops */
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* stack on tablets and mobiles */
+    }
+}
+
+/* Menu cards */
 .menu-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #e6f2ff;
-    padding: 50px 30px;
-    border-radius: 20px;
+    background: linear-gradient(135deg, #e6f2ff, #ffffff);
+    padding: 30px 20px;
+    border-radius: 25px;
     text-decoration: none;
     color: #0b1f3a;
     box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     text-align: center;
-    min-height: 220px;
+    min-height: 220px; /* shorter height */
 }
 
+/* Icon Circle */
 .menu-card .icon-circle {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     background: #4facfe;
     color: white;
     font-size: 36px;
@@ -132,33 +122,63 @@ h3 {
     border-radius: 50%;
     margin-bottom: 20px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Card Text */
 .menu-card h5 {
-    margin: 15px 0 10px;
-    font-weight: 600;
+    margin: 10px 0 8px;
+    font-weight: 700;
     font-size: 20px;
 }
-
 .menu-card p {
-    font-size: 15px;
-    color: #333;
+    font-size: 14px;
+    color: #555;
 }
 
+/* Hover Effects */
 .menu-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 16px 35px rgba(0,0,0,0.15);
-    background: #d0e7ff;
+    background: linear-gradient(135deg, #d0e7ff, #ffffff);
+}
+.menu-card:hover .icon-circle {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Responsive */
+/* Responsive tweaks */
 @media (max-width: 768px) {
-    .grid-container {
-        grid-template-columns: 1fr;
+    .menu-card {
+        padding: 25px 15px;
     }
-    .nav-container {
-        flex-direction: column;
-        gap: 12px;
+    .menu-card .icon-circle {
+        width: 70px;
+        height: 70px;
+        font-size: 30px;
+    }
+    .menu-card h5 {
+        font-size: 18px;
+    }
+    .menu-card p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-card {
+        padding: 20px 10px;
+    }
+    .menu-card .icon-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+    }
+    .menu-card h5 {
+        font-size: 16px;
+    }
+    .menu-card p {
+        font-size: 12px;
     }
 }
 </style>

@@ -1,27 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="center-container">
-    <div class="card large-card">
-
-        <!-- 💰 Icon -->
-        <div class="icon">
-            💰
+    <div class="card">
+        <div class="icon-circle">
+            <i class="bi bi-coin"></i>
         </div>
-
         <h1>Finance Dashboard</h1>
         <p>Track. Analyze. Grow your finances with clarity.</p>
-
-        <a href="{{ url_for('login') }}">
-            <button class="btn btn-primary">Login</button>
-        </a>
-
-        <a href="{{ url_for('register') }}">
-            <button class="btn btn-secondary">Register</button>
-        </a>
-
+        <div class="btn-container">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+        </div>
     </div>
 </div>
-
 {% endblock %}

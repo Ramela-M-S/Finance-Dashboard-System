@@ -1,63 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<br>
-<br>
-<br>
-<br>
-<div class="container mt-4">
+<div class="container my-4">
 
-    <div class="card shadow-sm p-4">
-        <h2 class="mb-4">🔍 Filter & Search Records</h2>
-        <br>
-        <br>
+    <div class="card shadow-lg p-4 wide-card">
+        <h2 class="mb-3 text-primary text-center">🔍 Filter & Search Records</h2>
+
         <!-- Filter Form -->
-        <form method="POST" action="/admin/filter" class="row g-3 align-items-end mb-4">
-            <br>
-            <br>
-            <div class="col-md-2">
-                <label class="form-label fw-semibold">Type</label>
-                <select name="type" class="form-control">
+        <form method="POST" action="/admin/filter" class="filter-form-vertical">
+            <div class="form-group">
+                <select name="type" class="input-box">
                     <option value="all">All Types</option>
                     <option value="income" {% if selected_type=='income' %}selected{% endif %}>Income</option>
                     <option value="expense" {% if selected_type=='expense' %}selected{% endif %}>Expense</option>
                 </select>
             </div>
-            <br>
 
-            <div class="col-md-2">
-                <label class="form-label fw-semibold">Category</label>
-                <select name="category" class="form-control">
+            <div class="form-group">
+                <select name="category" class="input-box">
                     <option value="all">All Categories</option>
                     {% for cat in categories %}
                         <option value="{{ cat }}" {% if selected_category==cat %}selected{% endif %}>{{ cat }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <br>
 
-            <div class="col-md-2">
-                <label class="form-label fw-semibold">Start Date</label>
-                <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+            <div class="form-group">
+                <input type="date" name="start_date" class="input-box" value="{{ start_date }}">
             </div>
-            <br>
 
-            <div class="col-md-2">
-                <label class="form-label fw-semibold">End Date</label>
-                <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+            <div class="form-group">
+                <input type="date" name="end_date" class="input-box" value="{{ end_date }}">
             </div>
-            <br>
 
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Filter</button>
             </div>
-            <br>
-
         </form>
-        
+        <br>
+        <br>
+        <br>
+        <br>
 
         <!-- Records Table -->
-        <div class="table-responsive">
+        <div class="table-responsive mt-3">
             <table class="table table-hover table-striped align-middle mb-0">
                 <thead class="table-light">
                     <tr>
@@ -96,58 +82,99 @@
 
     </div>
 </div>
+
 <style>
-/* Compact card for filter + records */
-.recent-card {
-    padding: 12px !important;
-    min-height: 300px !important;
-    border-radius: 12px;
-    max-width: 1000px;
+/* Card styling */
+.wide-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 40px 30px;
+    background-color: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.wide-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+/* Filter Form */
+.filter-form-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 450px;
     margin: 0 auto;
 }
-
-/* Compact form inputs */
-.recent-card select.form-control,
-.recent-card input.form-control {
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 14px;
+.filter-form-vertical .form-group {
+    display: flex;
+    flex-direction: column;
 }
 
-/* Table styles */
+.input-box {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #f8faff;
+    font-size: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+.input-box:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 8px rgba(59,130,246,0.25);
+}
+
+/* Button Styling */
+.filter-form-vertical .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 10px;
+}
+.filter-form-vertical .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(59,130,246,0.25);
+}
+
+/* Table */
+.table-responsive {
+    overflow-x: auto;
+}
 .table-hover tbody tr {
     transition: 0.2s ease;
 }
-
-/* Very light blue for table rows */
-.table-hover tbody tr:nth-child(odd) {
-    background-color: #f0f8ff; /* AliceBlue, subtle light blue */
-}
-
-.table-hover tbody tr:hover {
-    background-color: #d9ebff; /* slightly darker blue on hover */
-}
+.table-hover tbody tr:nth-child(odd) { background-color: #f9faff; }
+.table-hover tbody tr:hover { background-color: #e3f0ff; }
 
 .table th, .table td {
-    font-size: 14px;
-    padding: 6px 12px;
-    vertical-align: middle;
+    font-size: 13px;
+    padding: 8px 10px;
 }
+.table th { font-weight: 600; }
+.table td { color: #0b1f3a; }
 
-.table th {
-    font-weight: 600;
-}
-
-.table td {
-    color: #0b1f3a;
-}
-
-/* Badge for transaction type */
 .badge {
     font-size: 12px;
     padding: 4px 8px;
-    border-radius: 12px;
+}
+
+/* Tablet (≤992px) */
+@media (max-width: 992px) {
+    .wide-card { max-width: 95%; padding: 30px 20px; }
+    .filter-form-vertical { max-width: 100%; gap: 14px; }
+}
+
+/* Mobile (≤576px) */
+@media (max-width: 576px) {
+    .wide-card { padding: 20px 15px; border-radius: 12px; }
+    h2 { font-size: 18px; text-align: center; }
+    .filter-form-vertical .input-box,
+    .filter-form-vertical .btn { font-size: 13px; padding: 8px 10px; }
+    .table th, .table td { font-size: 11px; padding: 6px 8px; }
+    .badge { font-size: 11px; padding: 3px 6px; }
 }
 </style>
-
 {% endblock %}

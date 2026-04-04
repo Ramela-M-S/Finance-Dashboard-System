@@ -5,39 +5,136 @@
 <div class="center-container">
     <div class="card large-card">
 
-        <h2>Register</h2>
+        <!-- Icon at top -->
+        <div class="icon-circle register-icon">
+            <i class="bi bi-person-plus-fill"></i>
+        </div>
 
-        <form method="POST">
+        <h2 class="card-title">Register</h2>
+        <p class="card-subtitle">Create your account and start managing your finances.</p>
+
+        <form method="POST" class="register-form">
             {{ form.hidden_tag() }}
 
-            <div>
-                {{ form.name.label }}<br>
+            <div class="form-group">
+                {{ form.name.label(class="form-label") }}
                 {{ form.name(class="input") }}
             </div>
 
-            <div>
-                {{ form.email.label }}<br>
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
                 {{ form.email(class="input") }}
             </div>
 
-            <div>
-                {{ form.password.label }}<br>
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
                 {{ form.password(class="input") }}
             </div>
 
-            <div>
-                {{ form.confirm_password.label }}<br>
+            <div class="form-group">
+                {{ form.confirm_password.label(class="form-label") }}
                 {{ form.confirm_password(class="input") }}
             </div>
 
-
-
-
-            <br>
-            {{ form.submit(class="btn btn-primary") }}
+            {{ form.submit(class="btn btn-primary btn-register") }}
         </form>
+
+        <p class="login-text">
+            Already have an account? <a href="{{ url_for('login') }}">Login</a>
+        </p>
 
     </div>
 </div>
+
+<style>
+/* Card styling */
+.large-card {
+    max-width: 450px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 16px 35px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.large-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* Icon styling */
+.register-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Titles */
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1E3A8A;
+    margin-bottom: 5px;
+}
+
+.card-subtitle {
+    font-size: 0.95rem;
+    color: #64748B;
+    margin-bottom: 25px;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Button */
+.btn-register {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Login text */
+.login-text {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #475569;
+    text-align: center;
+}
+
+.login-text a {
+    color: #3B82F6;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .large-card {
+        padding: 30px 20px;
+    }
+    .register-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 32px;
+    }
+    .card-title {
+        font-size: 1.6rem;
+    }
+}
+</style>
 
 {% endblock %}

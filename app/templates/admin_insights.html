@@ -3,15 +3,152 @@
 {% block content %}
 <div class="container mt-4">
 
-    <h2>📊 Admin Dashboard & Insights</h2>
+    <h2 class="mb-4">📊 Admin Dashboard & Insights</h2>
 
     <!-- Total Income, Expenses & Net Balance -->
+    <!-- Total Income, Expenses & Net Balance -->
+<div class="row g-3">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card dashboard-card small-card bg-success text-white">
+            <div class="icon-circle">💰</div>
+            <h5>Total Income</h5>
+            <p>₹ {{ total_income }}</p>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card dashboard-card small-card bg-danger text-white">
+            <div class="icon-circle">📉</div>
+            <h5>Total Expenses</h5>
+            <p>₹ {{ total_expenses }}</p>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12">
+        <div class="card dashboard-card small-card bg-info text-white">
+            <div class="icon-circle">💹</div>
+            <h5>Net Balance</h5>
+            <p>₹ {{ net_balance }}</p>
+        </div>
+    </div>
+</div>
+
 <style>
-/* Compact dashboard cards */
+/* Smaller dashboard cards */
+.dashboard-card.small-card {
+    padding: 8px 10px;          /* reduce padding */
+    min-height: 100px;          /* smaller height */
+}
+.dashboard-card.small-card .icon-circle {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+.dashboard-card.small-card h5 {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+.dashboard-card.small-card p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .dashboard-card.small-card h5 { font-size: 13px; }
+    .dashboard-card.small-card p { font-size: 14px; }
+    .dashboard-card.small-card .icon-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+}
+@media (max-width: 576px) {
+    .dashboard-card.small-card h5 { font-size: 12px; }
+    .dashboard-card.small-card p { font-size: 13px; }
+    .dashboard-card.small-card .icon-circle {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+    }
+}
+</style>
+
+    <!-- Category-wise Totals -->
+    <div class="mt-5">
+        <h2 class="mb-3">📂 Category-wise Totals</h2>
+        <div class="card category-card shadow-sm p-2">
+            <div class="table-responsive">
+                <table class="table table-borderless table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-2">Category</th>
+                            <th class="py-2 text-end">Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category, total in category_totals.items() %}
+                        <tr>
+                            <td class="py-2">{{ category }}</td>
+                            <td class="py-2 text-end">₹ {{ total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="mt-5">
+        <h2 class="mb-3">📝 Recent Transactions</h2>
+        <div class="card recent-card shadow-sm p-3">
+            <div class="table-responsive">
+                <table class="table table-borderless table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-2">Date</th>
+                            <th class="py-2">Type</th>
+                            <th class="py-2">Category</th>
+                            <th class="py-2 text-end">Amount</th>
+                            <th class="py-2">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in recent_records %}
+                        <tr>
+                            <td class="py-2">{{ record.date.strftime("%Y-%m-%d") }}</td>
+                            <td class="py-2">
+                                {% if record.type == 'income' %}
+                                    <span class="badge bg-success">Income</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Expense</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-2">{{ record.category }}</td>
+                            <td class="py-2 text-end">₹ {{ record.amount }}</td>
+                            <td class="py-2">{{ record.notes }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Trends -->
+    <div class="mt-5">
+        <h4 class="mb-3">📈 Monthly Trends</h4>
+        <div class="card shadow-sm p-4 monthly-chart-card">
+            <canvas id="monthlyChart" style="width:100%; height:350px;"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<style>
+/* Dashboard cards */
 .dashboard-card {
-    padding: 12px 15px !important;   /* less padding than base */
-    min-height: unset !important;     /* remove base min-height */
-    max-width: 100%;                  /* stay within column */
+    padding: 12px 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,229 +156,59 @@
     text-align: center;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-width: 100%;
 }
-
-/* Compact icon inside card */
 .dashboard-card .icon-circle {
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 22px !important;
-    margin-bottom: 8px !important;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    margin-bottom: 8px;
 }
-
-/* Headings and text spacing */
 .dashboard-card h5 {
-    margin-bottom: 4px !important;
-    font-size: 16px !important;
+    margin-bottom: 4px;
+    font-size: 16px;
 }
-
 .dashboard-card p {
-    margin-bottom: 0 !important;
-    font-size: 18px !important;
-}
-</style>
-
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="card dashboard-card bg-success text-white">
-            <div class="icon-circle">💰</div>
-            <h5>Total Income</h5>
-            <p>₹ {{ total_income }}</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card dashboard-card bg-danger text-white">
-            <div class="icon-circle">📉</div>
-            <h5>Total Expenses</h5>
-            <p>₹ {{ total_expenses }}</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card dashboard-card bg-info text-white">
-            <div class="icon-circle">💹</div>
-            <h5>Net Balance</h5>
-            <p>₹ {{ net_balance }}</p>
-        </div>
-    </div>
-</div>
-<!-- Category-wise Totals -->
-<div class="mt-5">
-    <h2 class="mb-3">📂 Category-wise Totals</h2>
-    <div class="card category-card shadow-sm p-2">
-        <table class="table table-borderless table-hover mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th class="py-2">Category</th>
-                    <th class="py-2 text-end">Total Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category, total in category_totals.items() %}
-                <tr>
-                    <td class="py-2">{{ category }}</td>
-                    <td class="py-2 text-end">₹ {{ total }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<style>
-/* Compact card for category totals */
-.category-card {
-    padding: 12px !important;       /* smaller padding */
-    min-height: 200px !important;   /* compact height */
-    max-width: 1000px;              /* optional: control width */
-    margin: 0 auto;                 /* center card */
-    border-radius: 12px;
+    margin-bottom: 0;
+    font-size: 18px;
 }
 
-/* Table inside the card */
-.category-card table {
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-/* Very light blue table rows */
-.category-card .table tbody tr:nth-child(odd) {
-    background-color: #f0f8ff; /* AliceBlue, subtle light blue */
-}
-
-.category-card .table tbody tr:nth-child(even) {
-    background-color: #ffffff; /* white for alternating row */
-}
-
-/* Hover effect for table rows */
-.category-card .table-hover tbody tr:hover {
-    background-color: #d9ebff; /* slightly darker blue on hover */
-    transition: 0.2s ease;
-}
-
-/* Table text styling */
-.category-card .table th, 
-.category-card .table td {
-    font-size: 14px;
-    padding: 6px 12px;
-    vertical-align: middle;
-}
-
-.category-card .table th {
-    font-weight: 600;
-    background-color: #e6f2ff; /* soft light blue header */
-}
-
-.category-card .table td {
-    color: #0b1f3a;
-}
-</style>
-
-  <!-- Recent Activity -->
-<div class="mt-5">
-    <h2 class="mb-3">📝 Recent Transactions</h2>
-    <div class="card recent-card shadow-sm p-3">
-        <table class="table table-borderless table-hover mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th class="py-2">Date</th>
-                    <th class="py-2">Type</th>
-                    <th class="py-2">Category</th>
-                    <th class="py-2 text-end">Amount</th>
-                    <th class="py-2">Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in recent_records %}
-                <tr>
-                    <td class="py-2">{{ record.date.strftime("%Y-%m-%d") }}</td>
-                    <td class="py-2">
-                        {% if record.type == 'income' %}
-                            <span class="badge bg-success">Income</span>
-                        {% else %}
-                            <span class="badge bg-danger">Expense</span>
-                        {% endif %}
-                    </td>
-                    <td class="py-2">{{ record.category }}</td>
-                    <td class="py-2 text-end">₹ {{ record.amount }}</td>
-                    <td class="py-2">{{ record.notes }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<style>
-/* Compact card for recent transactions */
-.recent-card {
-    padding: 12px !important;
-    min-height: 300px !important;
+/* Category & Recent Cards */
+.category-card, .recent-card {
+    padding: 12px;
     border-radius: 12px;
     max-width: 1000px;
     margin: 0 auto;
 }
-
-/* Table styles with light blue theme */
-.recent-card table {
+.category-card table, .recent-card table {
     width: 100%;
     border-radius: 8px;
     overflow: hidden;
     border-collapse: separate;
     border-spacing: 0;
 }
-
-/* Alternating row colors */
-.recent-card .table tbody tr:nth-child(odd) {
-    background-color: #f0f8ff; /* AliceBlue - very light blue */
-}
-
-.recent-card .table tbody tr:nth-child(even) {
-    background-color: #ffffff; /* white for contrast */
-}
-
-/* Hover effect */
-.recent-card .table-hover tbody tr:hover {
-    background-color: #d9ebff; /* slightly darker blue on hover */
-    transition: 0.2s ease;
-}
-
-/* Table text styling */
-.recent-card .table th, 
-.recent-card .table td {
+.category-card .table tbody tr:nth-child(odd),
+.recent-card .table tbody tr:nth-child(odd) { background-color: #f0f8ff; }
+.category-card .table tbody tr:nth-child(even),
+.recent-card .table tbody tr:nth-child(even) { background-color: #ffffff; }
+.category-card .table-hover tbody tr:hover,
+.recent-card .table-hover tbody tr:hover { background-color: #d9ebff; transition: 0.2s ease; }
+.category-card .table th, .category-card .table td,
+.recent-card .table th, .recent-card .table td {
     font-size: 14px;
     padding: 6px 12px;
     vertical-align: middle;
 }
-
-.recent-card .table th {
+.category-card .table th, .recent-card .table th {
     font-weight: 600;
-    background-color: #e6f2ff; /* soft light blue header */
+    background-color: #e6f2ff;
 }
-
-.recent-card .table td {
+.category-card .table td, .recent-card .table td {
     color: #0b1f3a;
 }
+.badge { font-size: 12px; padding: 4px 8px; border-radius: 12px; }
 
-/* Badge for transaction type */
-.badge {
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 12px;
-}
-</style>
-<!-- Monthly Trends -->
-<div class="mt-5">
-    <h4 class="mb-3">📈 Monthly Trends</h4>
-    <div class="card shadow-sm p-4 monthly-chart-card">
-        <canvas id="monthlyChart" style="width:100%; height:350px;"></canvas>
-    </div>
-</div>
-
-<style>
-/* Card for chart */
+/* Chart card */
 .monthly-chart-card {
     border-radius: 14px;
     background-color: #f9fbff;
@@ -250,23 +217,32 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Chart header */
-h4 {
-    font-weight: 600;
-    color: #0b1f3a;
+/* Responsive adjustments */
+/* Laptop / Desktop */
+@media (max-width: 1200px) {
+    .dashboard-card h5 { font-size: 15px; }
+    .dashboard-card p { font-size: 16px; }
 }
-
-/* Optional responsive adjustments */
-@media (max-width: 768px) {
-    .monthly-chart-card {
-        padding: 20px;
-    }
+/* Tablet */
+@media (max-width: 992px) {
+    .row.g-4 > [class*="col-"] { margin-bottom: 15px; }
+    .dashboard-card h5 { font-size: 14px; }
+    .dashboard-card p { font-size: 15px; }
+    .category-card table th, .category-card table td,
+    .recent-card table th, .recent-card table td { font-size: 13px; padding: 5px 10px; }
+}
+/* Mobile */
+@media (max-width: 576px) {
+    .dashboard-card h5 { font-size: 13px; }
+    .dashboard-card p { font-size: 14px; }
+    .category-card table th, .category-card table td,
+    .recent-card table th, .recent-card table td { font-size: 12px; padding: 4px 6px; }
+    .monthly-chart-card { padding: 20px; }
 }
 </style>
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const ctx = document.getElementById('monthlyChart').getContext('2d');
