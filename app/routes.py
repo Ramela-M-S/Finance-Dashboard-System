@@ -48,7 +48,10 @@ def init_routes(app):
             hashed_passwd = generate_password_hash(form.password.data)
            
             user = User(name = form.name.data, email = form.email.data, password = hashed_passwd, role_id = viewer_role.id)
-            
+            existing_user = User.query.filter_by(email=form.email.data).first()
+            if existing_user:
+                flash("Email already exists!", "error")
+                return redirect(url_for("login"))
             db.session.add(user)
             db.session.commit()
             flash("Registration successful! Please login.", "success")
