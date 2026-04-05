@@ -6,7 +6,6 @@
     <div class="card shadow-lg p-4 wide-card">
         <h2 class="mb-3 text-primary text-center">🔍 Filter & Search Records</h2>
         <br>
-        <!-- Filter Form -->
         <form method="POST" action="/admin/filter" class="filter-form-vertical">
             <div class="form-group">
                 <select name="type" class="input-box">
@@ -37,9 +36,6 @@
                 <button type="submit" class="btn btn-primary btn-lg">Filter</button>
             </div>
         </form>
-        
-
-        <!-- Records Table -->
         <div class="table-responsive mt-3">
             <table class="table table-hover table-striped align-middle mb-0">
                 <thead class="table-light">
@@ -81,7 +77,7 @@
 </div>
 
 <style>
-/* Card styling */
+
 .wide-card {
     max-width: 1200px;
     margin: 0 auto;
@@ -95,7 +91,7 @@
     box-shadow: 0 15px 30px rgba(0,0,0,0.08);
 }
 
-/* Filter Form */
+
 .filter-form-vertical {
     display: flex;
     flex-direction: column;
@@ -128,7 +124,7 @@
     margin-top: 30px;
 }
 
-/* Button Styling */
+
 .filter-form-vertical .btn {
     width: 100%;
     padding: 10px;
@@ -140,7 +136,7 @@
     box-shadow: 0 4px 10px rgba(59,130,246,0.25);
 }
 
-/* Table */
+
 .table-responsive {
     overflow-x: auto;
 }
@@ -164,13 +160,12 @@
     padding: 4px 8px;
 }
 
-/* Tablet (≤992px) */
+
 @media (max-width: 992px) {
     .wide-card { max-width: 95%; padding: 30px 20px; }
     .filter-form-vertical { max-width: 100%; gap: 14px; }
 }
 
-/* Mobile (≤576px) */
 @media (max-width: 576px) {
     .wide-card { padding: 20px 15px; border-radius: 12px; }
     h2 { font-size: 18px; text-align: center; }

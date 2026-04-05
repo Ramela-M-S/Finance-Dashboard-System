@@ -7,8 +7,6 @@
     <br>
 <br>
 
-    <!-- Total Income, Expenses & Net Balance -->
-    <!-- Total Income, Expenses & Net Balance -->
 <div class="row g-3">
     <div class="col-lg-4 col-md-6 col-sm-12">
         <div class="card dashboard-card small-card bg-success text-white">
@@ -36,10 +34,10 @@
 <br>
 
 <style>
-/* Smaller dashboard cards */
+
 .dashboard-card.small-card {
-    padding: 8px 10px;          /* reduce padding */
-    min-height: 100px;          /* smaller height */
+    padding: 8px 10px;         
+    min-height: 100px;          
 }
 .dashboard-card.small-card .icon-circle {
     width: 30px;
@@ -56,7 +54,7 @@
     margin-bottom: 0;
 }
 
-/* Responsive tweaks */
+
 @media (max-width: 768px) {
     .dashboard-card.small-card h5 { font-size: 13px; }
     .dashboard-card.small-card p { font-size: 14px; }
@@ -77,7 +75,6 @@
 }
 </style>
 
-    <!-- Category-wise Totals -->
     <div class="mt-5">
         <h2 class="mb-3">📂 Category-wise Totals</h2>
         <br>
@@ -106,7 +103,6 @@
     <br>
 <br>
 
-    <!-- Recent Activity -->
     <div class="mt-5">
         <h2 class="mb-3">📝 Recent Transactions</h2>
 <br><br>
@@ -153,7 +149,6 @@
     <br>
 <br>
 
-    <!-- Monthly Trends -->
     <div class="mt-5">
         <h2 class="mb-3">📈 Monthly Trends</h2>
         <br>
@@ -166,7 +161,7 @@
 </div>
 
 <style>
-/* Dashboard cards */
+
 .dashboard-card {
     padding: 12px 15px;
     display: flex;
@@ -228,7 +223,7 @@
 }
 .badge { font-size: 12px; padding: 4px 8px; border-radius: 12px; }
 
-/* Chart card */
+
 .monthly-chart-card {
     border-radius: 14px;
     background-color: #f9fbff;
@@ -236,7 +231,7 @@
     margin: 0 auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-/* ===== Recent Card ===== */
+
 .recent-card {
     padding: 15px;
     border-radius: 12px;
@@ -244,7 +239,7 @@
     margin: 0 auto;
 }
 
-/* Table Styling */
+
 .recent-card table {
     width: 100%;
     border-radius: 8px;
@@ -280,14 +275,14 @@
     transition: 0.2s ease;
 }
 
-/* Badge */
+
 .badge {
     font-size: 12px;
     padding: 4px 8px;
     border-radius: 12px;
 }
 
-/* ===== MOBILE RESPONSIVE ===== */
+
 @media (max-width: 576px) {
 
     .recent-card table thead {
@@ -326,13 +321,12 @@
         font-size: 12px;
     }
 }
-/* Responsive adjustments */
-/* Laptop / Desktop */
+
 @media (max-width: 1200px) {
     .dashboard-card h5 { font-size: 15px; }
     .dashboard-card p { font-size: 16px; }
 }
-/* Tablet */
+
 @media (max-width: 992px) {
     .row.g-4 > [class*="col-"] { margin-bottom: 15px; }
     .dashboard-card h5 { font-size: 14px; }
@@ -340,7 +334,7 @@
     .category-card table th, .category-card table td,
     .recent-card table th, .recent-card table td { font-size: 13px; padding: 5px 10px; }
 }
-/* Mobile */
+
 @media (max-width: 576px) {
     .dashboard-card h5 { font-size: 13px; }
     .dashboard-card p { font-size: 14px; }

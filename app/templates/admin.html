@@ -37,35 +37,35 @@
 </div>
 
 <style>
-    /* Grid layout - default 4 cards in one row */
+   
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards in one row on large screens */
-    gap: 30px;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 40px; 
 }
 
-/* Medium screens (tablet/laptop) - 2x2 */
+
 @media (max-width: 1200px) {
     .grid-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Small screens (phones) - stack vertically */
+
 @media (max-width: 768px) {
     .grid-container {
-        grid-template-columns: 1fr; /* 1 card per row */
+        grid-template-columns: 1fr; 
     }
 }
-/* Admin Panel Container */
+
 .admin-panel {
-    max-width: 1400px;
-    margin: 40px auto;
+    max-width: 1100px;   
+    margin: 60px auto;  
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Title */
+
 .admin-panel h3 {
     text-align: center;
     font-size: 36px;
@@ -74,49 +74,55 @@
     margin-bottom: 60px;
 }
 
-/* Grid layout - all 4 cards visible on large screens */
+
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards in one row */
-    gap: 30px;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 40px;
+    justify-content: center;
 }
 
 @media (max-width: 1200px) {
     .grid-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 up, 2 down on smaller desktops */
+        grid-template-columns: repeat(2, 1fr); 
     }
 }
 
 @media (max-width: 768px) {
     .grid-container {
-        grid-template-columns: 1fr; /* stack on tablets and mobiles */
+        grid-template-columns: 1fr;
     }
 }
 
-/* Menu cards */
+
 .menu-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     background: linear-gradient(135deg, #e6f2ff, #ffffff);
-    padding: 30px 20px;
+    width: 100%; 
+    padding: 50px 30px;   
     border-radius: 25px;
+
     text-decoration: none;
     color: #0b1f3a;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+
+    transition: all 0.3s ease;
     text-align: center;
-    min-height: 220px; /* shorter height */
+
+    min-height: 300px;   
 }
 
-/* Icon Circle */
 .menu-card .icon-circle {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: #4facfe;
     color: white;
-    font-size: 36px;
+    font-size: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,18 +132,18 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Card Text */
+
 .menu-card h5 {
     margin: 10px 0 8px;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 24px;
 }
 .menu-card p {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
 }
 
-/* Hover Effects */
+
 .menu-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 16px 35px rgba(0,0,0,0.15);
@@ -148,8 +154,11 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Responsive tweaks */
+
 @media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr; 
+    }
     .menu-card {
         padding: 25px 15px;
     }

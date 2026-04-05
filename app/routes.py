@@ -120,7 +120,6 @@ def init_routes(app):
             return decorated
         return wrapper
 
-#-----Dashboard-------#
 
     @app.route("/admin")
     @role_required("admin")
@@ -132,14 +131,13 @@ def init_routes(app):
         
         return render_template("admin.html")
 
-#--Admin Users--#
     @app.route("/admin/users")
     @role_required("admin")
     def admin_users():
         users = User.query.all()
         return render_template("admin_users.html", users=users)
     
-    #--inside admin users--#
+
 
     @app.route("/admin/toggle/<int:user_id>")
     @role_required("admin")
@@ -148,7 +146,7 @@ def init_routes(app):
 
         user.is_active = not user.is_active
         db.session.commit()
-
+        flash("Changed the user status!", "success")
         return redirect(url_for("admin_users"))
 
     @app.route("/admin/change_role/<int:user_id>", methods=["POST"])
@@ -161,7 +159,7 @@ def init_routes(app):
 
         user.role = role
         db.session.commit()
-
+        flash("User Role Changed successfully!", "success")
         return redirect(url_for("admin_users"))
 
     @app.route("/admin/delete_user/<int:user_id>")
@@ -171,9 +169,9 @@ def init_routes(app):
 
         db.session.delete(user)
         db.session.commit()
-
+        flash("User deleted successfully!", "error")
         return redirect(url_for("admin_users"))
-#--Admin Records--#
+
 
     @app.route("/admin/records")
     @role_required("admin")
@@ -255,36 +253,28 @@ def init_routes(app):
     @app.route("/admin/insights")
     @role_required("admin","analyst")
     def admin_insights():
-    # Calculate total income
+  
         income_rec = Record.query.filter_by(type="income").all()
         tot_in = sum(rec.amount for rec in income_rec)
-
-        # Calculate total expenses
         exp_rec = Record.query.filter_by(type="expense").all()
         tot_exp = sum(rec.amount for rec in exp_rec)
-
-        # Net balance
         net_balance = tot_in - tot_exp
-
-        # All records for other calculations
         all_records = Record.query.all()
 
-        # Category-wise totals
         category_totals = {}
         for record in all_records:
             category_totals[record.category] = category_totals.get(record.category, 0) + record.amount
-
-        # Recent transactions
         recent_records = Record.query.order_by(Record.date.desc()).limit(10).all()
 
-        # Monthly trends
+      
         months = ["January","February","March","April","May","June",
           "July","August","September","October","November","December"]
         monthly_income = OrderedDict((m, 0) for m in months)
         monthly_expense = OrderedDict((m, 0) for m in months)
+
         for r in all_records:
             month = r.date.strftime("%B")
-            r_type = r.type.lower()  # abbreviated month to match keys
+            r_type = r.type.lower() 
             if r_type == "income":
                 if month not in monthly_income:
                     monthly_income[month] = 0
@@ -295,6 +285,7 @@ def init_routes(app):
                 monthly_expense[month] += r.amount
         print("Monthly exepenses:",monthly_expense)
         print("Monthly income:",monthly_income)
+
         return render_template(
             "admin_insights.html", 
             total_income=tot_in, 
@@ -306,7 +297,7 @@ def init_routes(app):
             monthly_expense=monthly_expense
         )
     
-    #---Filter & Search---#
+   
     @app.route("/admin/filter", methods=[ "GET","POST"])
     @role_required("admin","analyst")
     def admin_filter():
@@ -352,8 +343,6 @@ def init_routes(app):
         )
     
 
-#---Analyst---#
-
     @app.route("/analyst")
     @role_required("analyst")
     def analyst_dashboard():
@@ -361,10 +350,8 @@ def init_routes(app):
         if not current_user.is_authenticated:
             return redirect(url_for("login"))
 
-        
         return render_template("analyst.html")
 
-#---Viewer---#
 
     @app.route("/viewer")
     @role_required("viewer")

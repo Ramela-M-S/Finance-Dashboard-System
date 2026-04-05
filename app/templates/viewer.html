@@ -2,11 +2,7 @@
 
 {% block content %}
 <div class="dashboard-container">
-
-    <!-- Title -->
     <h2 class="page-title">💰 My Dashboard</h2>
-
-    <!-- 🔹 Stats Cards Horizontal -->
     <div class="stats-row">
         <div class="stat-card income">
             <h5>Total Income</h5>
@@ -21,10 +17,7 @@
             <p>₹ {{ balance }}</p>
         </div>
     </div>
-
-    <!-- 📋 Transactions Table -->
     <div class="card table-card wide-card">
-
         <div class="card-header">
             
             <h4>📋 My Transactions</h4>
@@ -78,14 +71,13 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Page title */
+
 .page-title {
     font-weight: 700;
     margin-bottom: 25px;
     color: #0b1f3a;
 }
 
-/* 🔹 Stats Cards Horizontal Layout */
 .stats-row {
     display: flex;
     justify-content: space-between;
@@ -93,9 +85,9 @@
     flex-wrap: wrap;
 }
 
-/* Stats Cards */
+
 .stat-card {
-    flex: 1; /* evenly distribute */
+    flex: 1; 
     min-width: 250px;
     padding: 25px;
     border-radius: 16px;
@@ -109,7 +101,7 @@
     transform: translateY(-5px);
 }
 
-/* Colors */
+
 .stat-card.income {
     background: linear-gradient(135deg, #28a745, #5cd65c);
 }
@@ -129,7 +121,6 @@
     font-weight: 700;
 }
 
-/* 🔹 Transactions Card */
 .card.table-card {
     background: white;
     border-radius: 16px;
@@ -138,7 +129,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-/* Make card wider and centered */
+
 .wide-card {
     max-width: 1200px;
     margin: 0 auto;
@@ -170,7 +161,7 @@
     background: #f1f7ff;
 }
 
-/* Badges */
+
 .badge {
     padding: 5px 10px;
     border-radius: 12px;
@@ -182,14 +173,12 @@
 .badge.income { background: #28a745; }
 .badge.expense { background: #dc3545; }
 
-/* Empty Table */
 .empty-text {
     text-align: center;
     padding: 20px;
     color: #777;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .stats-row {
         flex-direction: column;

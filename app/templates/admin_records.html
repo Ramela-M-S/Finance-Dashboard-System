@@ -5,7 +5,7 @@
 
     <h3 class="mb-4 text-primary text-center">💰 Financial Records</h3>
 
-    <!-- ➕ Add Record -->
+ 
     <div class="card record-card wide-card">
         <h5 class="mb-3">Add Record</h5>
         <form action="/add_record" method="POST" class="record-form-vertical">
@@ -35,7 +35,6 @@
         </form>
     </div>
 
-    <!-- 📋 Records Table -->
     <div class="card record-card wide-card">
         <h5 class="mb-3">All Records</h5>
         <div class="table-responsive">
@@ -91,7 +90,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Cards */
+
 .card.record-card {
     background: #f9fbff;
     border-radius: 16px;
@@ -101,7 +100,7 @@
 }
 .wide-card { max-width: 1200px; margin: 0 auto; }
 
-/* Vertical Form */
+
 .record-form-vertical {
     display: flex;
     flex-direction: column;
@@ -122,7 +121,7 @@
     box-shadow: 0 0 6px rgba(79,172,254,0.3);
 }
 
-/* Add Record Button */
+
 .btn-add {
     padding: 10px 0;
     border-radius: 12px;
@@ -135,7 +134,7 @@
 }
 .btn-add:hover { background: #3a9eee; }
 
-/* Table */
+
 .table-responsive { overflow-x: auto; }
 .styled-table { width: 100%; min-width: 900px; border-collapse: collapse; }
 .styled-table th, .styled-table td { padding: 10px 12px; text-align: left; font-size: 13px; }
@@ -143,23 +142,23 @@
 .styled-table tbody tr:nth-child(even) { background: #f1f7ff; }
 .styled-table tbody tr:hover { background: #d0e7ff; }
 
-/* Badges */
+
 .badge { padding: 3px 8px; border-radius: 12px; font-weight: 600; font-size: 12px; color: #fff; }
 .badge.income { background: #28a745; }
 .badge.expense { background: #dc3545; }
 
-/* Small Buttons */
+
 .btn-sm { padding: 4px 8px; font-size: 11px; border-radius: 6px; }
 
-/* Responsive */
 
-/* Laptop / medium screens */
+
+
 @media (max-width: 992px) {
     .wide-card { max-width: 95%; padding: 20px; }
     .record-form-vertical { gap: 10px; }
 }
 
-/* Tablet */
+
 @media (max-width: 768px) {
     .wide-card { padding: 18px; }
     .record-form-vertical .form-input, .btn-add { font-size: 13px; padding: 8px 10px; }
@@ -167,7 +166,6 @@
     .badge { font-size: 11px; padding: 2px 6px; }
 }
 
-/* Mobile */
 @media (max-width: 576px) {
     .styled-table {
     min-width: 100% !important; /* override 900px */
@@ -193,7 +191,7 @@
         padding: 8px;
     }
 
-    /* ===== TABLE → CARD VIEW ===== */
+   
 
     
 
@@ -227,7 +225,7 @@
         border: none;
     }
 
-    /* LABEL ABOVE VALUE */
+  
     .styled-table td::before {
         content: attr(data-label);
         display: block;
@@ -237,10 +235,10 @@
         margin-bottom: 2px;
     }
 
-    /* ACTION BUTTON FIX */
+  
     .styled-table td[data-label="Actions"] {
     display: flex;
-    flex-direction: column; /* stack vertically */
+    flex-direction: column; 
     gap: 6px;
     margin-top: 8px;
 }
