@@ -91,13 +91,13 @@ All routes and actions are protected based on role validation.
 
 ### 🏠 Home Page
 
-![Home Page](static/Hscreenshots/1.png)
+![Home Page](static/screenshots/1.png)
 
 ---
 
 ### 📝 Register Page
 
-![Register Page](static/2.png)
+![Register Page](static/screenshots/2.png)
 
 ---
 
