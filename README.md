@@ -91,61 +91,66 @@ All routes and actions are protected based on role validation.
 
 ### 🏠 Home Page
 
-![Home Page](static/1) Home Page.png)
+![Home Page](static/Hscreenshots/1.png)
 
 ---
 
 ### 📝 Register Page
 
-![Register Page](static/2) Register Page.png)
+![Register Page](static/2.png)
 
 ---
 
 ### 🔐 Login Page
 
-![Login Page](static/screenshots/login.png)
+![Login Page](static/screenshots/3.png)
 
 ---
 
 ### 👤 User Page
 
-![User Page](static/screenshots/user.png)
+![User Page](static/screenshots/4.png)
 
 ---
 
 ### 🧑‍💼 Admin Panel
 
-![Admin Panel](static/screenshots/admin_panel.png)
+![Admin Panel](static/screenshots/51.png)
 
 ---
 
 ### 📊 Analyst Panel
 
-![Analyst Page](static/screenshots/analyst.png)
+![Analyst Page](static/screenshots/600.png)
 
 ---
 
-### 📈 Dashboard & Insights
+### 📈 Dashboard 
 
-![Dashboard](static/screenshots/dashboard.png)
+![Dashboard](static/screenshots/531.png)
+
+---
+### 📈 Insights
+
+![Dashboard](static/screenshots/532.png)
 
 ---
 
 ### 🔍 Search & Filter
 
-![Search](static/screenshots/search.png)
+![Search](static/screenshots/551.png)
 
 ---
 
 ### 👥 User Management
 
-![User Management](static/screenshots/user_management.png)
+![User Management](static/screenshots/52.png)
 
 ---
 
 ### 💰 Record Management
 
-![Record Management](static/screenshots/records.png)
+![Record Management](static/screenshots/541.png)
 
 
 ---
