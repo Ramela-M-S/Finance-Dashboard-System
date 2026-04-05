@@ -169,19 +169,100 @@
 
 /* Mobile */
 @media (max-width: 576px) {
-    .wide-card { padding: 15px; border-radius: 12px; }
-    h3 { font-size: 18px; text-align: center; }
-    .record-form-vertical { gap: 8px; }
-    .record-form-vertical .form-input, .btn-add { font-size: 12px; padding: 6px 8px; }
-    .styled-table th, .styled-table td { font-size: 11px; padding: 6px 8px; }
+    .styled-table {
+    min-width: 100% !important; /* override 900px */
+}
+    .wide-card {
+        padding: 15px;
+        border-radius: 12px;
+    }
 
-    /* Make table rows card-like */
-    .styled-table thead { display: none; }
-    .styled-table tbody tr { display: block; margin-bottom: 15px; background: #f9fbff; padding: 12px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .styled-table tbody tr td { display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; }
-    .styled-table tbody tr td:before { content: attr(data-label); font-weight: 600; color: #0b1f3a; }
-    .badge { font-size: 11px; padding: 2px 5px; }
-    .btn-sm { padding: 3px 5px; font-size: 10px; }
+    h3 {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    /* FORM */
+    .record-form-vertical {
+        gap: 8px;
+    }
+
+    .record-form-vertical .form-input,
+    .btn-add {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    /* ===== TABLE → CARD VIEW ===== */
+
+    
+
+    .styled-table thead {
+        display: none;
+    }
+
+    .styled-table,
+    .styled-table tbody,
+    .styled-table tr,
+    .styled-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .styled-table tr {
+        width: 100%;
+    overflow: hidden;
+        background: #ffffff;
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .styled-table td {
+        display: block;
+        text-align: left;
+        padding: 6px 0;
+        font-size: 13px;
+        border: none;
+    }
+
+    /* LABEL ABOVE VALUE */
+    .styled-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: 600;
+        color: #3B82F6;
+        font-size: 12px;
+        margin-bottom: 2px;
+    }
+
+    /* ACTION BUTTON FIX */
+    .styled-table td[data-label="Actions"] {
+    display: flex;
+    flex-direction: column; /* stack vertically */
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.styled-table td[data-label="Actions"] form {
+    width: 100%;
+}
+
+.styled-table td[data-label="Actions"] .btn {
+    width: 100%;
+    text-align: center;
+}
+
+    .btn-sm {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .badge {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
 }
 </style>
 {% endblock %}

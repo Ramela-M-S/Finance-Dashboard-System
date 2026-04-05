@@ -3,7 +3,9 @@
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-4">📊 Admin Dashboard & Insights</h2>
+    <h2 class="mb-4">📊 Dashboard & Insights</h2>
+    <br>
+<br>
 
     <!-- Total Income, Expenses & Net Balance -->
     <!-- Total Income, Expenses & Net Balance -->
@@ -30,6 +32,8 @@
         </div>
     </div>
 </div>
+<br>
+<br>
 
 <style>
 /* Smaller dashboard cards */
@@ -76,6 +80,8 @@
     <!-- Category-wise Totals -->
     <div class="mt-5">
         <h2 class="mb-3">📂 Category-wise Totals</h2>
+        <br>
+<br>
         <div class="card category-card shadow-sm p-2">
             <div class="table-responsive">
                 <table class="table table-borderless table-hover mb-0">
@@ -97,47 +103,61 @@
             </div>
         </div>
     </div>
+    <br>
+<br>
 
     <!-- Recent Activity -->
     <div class="mt-5">
         <h2 class="mb-3">📝 Recent Transactions</h2>
-        <div class="card recent-card shadow-sm p-3">
-            <div class="table-responsive">
-                <table class="table table-borderless table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="py-2">Date</th>
-                            <th class="py-2">Type</th>
-                            <th class="py-2">Category</th>
-                            <th class="py-2 text-end">Amount</th>
-                            <th class="py-2">Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for record in recent_records %}
-                        <tr>
-                            <td class="py-2">{{ record.date.strftime("%Y-%m-%d") }}</td>
-                            <td class="py-2">
-                                {% if record.type == 'income' %}
-                                    <span class="badge bg-success">Income</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Expense</span>
-                                {% endif %}
-                            </td>
-                            <td class="py-2">{{ record.category }}</td>
-                            <td class="py-2 text-end">₹ {{ record.amount }}</td>
-                            <td class="py-2">{{ record.notes }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<br><br>
+
+<div class="card recent-card shadow-sm p-3">
+    <div class="table-responsive">
+        <table class="table table-borderless table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th class="text-end">Amount</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for record in recent_records %}
+                <tr>
+                    <td data-label="Date">{{ record.date.strftime("%Y-%m-%d") }}</td>
+
+                    <td data-label="Type">
+                        {% if record.type == 'income' %}
+                            <span class="badge bg-success">Income</span>
+                        {% else %}
+                            <span class="badge bg-danger">Expense</span>
+                        {% endif %}
+                    </td>
+
+                    <td data-label="Category">{{ record.category }}</td>
+
+                    <td data-label="Amount" class="text-end">
+                        ₹ {{ record.amount }}
+                    </td>
+
+                    <td data-label="Notes">{{ record.notes }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
+    <br>
+<br>
 
     <!-- Monthly Trends -->
     <div class="mt-5">
-        <h4 class="mb-3">📈 Monthly Trends</h4>
+        <h2 class="mb-3">📈 Monthly Trends</h2>
+        <br>
+<br>
         <div class="card shadow-sm p-4 monthly-chart-card">
             <canvas id="monthlyChart" style="width:100%; height:350px;"></canvas>
         </div>
@@ -216,7 +236,96 @@
     margin: 0 auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
+/* ===== Recent Card ===== */
+.recent-card {
+    padding: 15px;
+    border-radius: 12px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
 
+/* Table Styling */
+.recent-card table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.recent-card thead {
+    background-color: #e6f2ff;
+}
+
+.recent-card th {
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.recent-card td {
+    font-size: 14px;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.recent-card tbody tr:nth-child(odd) {
+    background-color: #f0f8ff;
+}
+
+.recent-card tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.recent-card tbody tr:hover {
+    background-color: #d9ebff;
+    transition: 0.2s ease;
+}
+
+/* Badge */
+.badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 576px) {
+
+    .recent-card table thead {
+        display: none;
+    }
+
+    .recent-card table,
+    .recent-card tbody,
+    .recent-card tr,
+    .recent-card td {
+        display: block;
+        width: 100%;
+    }
+
+    .recent-card tr {
+        background: #fff;
+        margin-bottom: 12px;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .recent-card td {
+        text-align: left !important;
+        padding: 6px 10px;
+        font-size: 13px;
+        border: none;
+    }
+
+    .recent-card td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        display: block;
+        color: #3B82F6;
+        margin-bottom: 2px;
+        font-size: 12px;
+    }
+}
 /* Responsive adjustments */
 /* Laptop / Desktop */
 @media (max-width: 1200px) {

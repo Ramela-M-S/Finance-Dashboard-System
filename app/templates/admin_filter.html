@@ -5,7 +5,7 @@
 
     <div class="card shadow-lg p-4 wide-card">
         <h2 class="mb-3 text-primary text-center">🔍 Filter & Search Records</h2>
-
+        <br>
         <!-- Filter Form -->
         <form method="POST" action="/admin/filter" class="filter-form-vertical">
             <div class="form-group">
@@ -37,10 +37,7 @@
                 <button type="submit" class="btn btn-primary btn-lg">Filter</button>
             </div>
         </form>
-        <br>
-        <br>
-        <br>
-        <br>
+        
 
         <!-- Records Table -->
         <div class="table-responsive mt-3">
@@ -127,6 +124,10 @@
     box-shadow: 0 0 8px rgba(59,130,246,0.25);
 }
 
+.table-responsive {
+    margin-top: 30px;
+}
+
 /* Button Styling */
 .filter-form-vertical .btn {
     width: 100%;
@@ -155,7 +156,9 @@
 }
 .table th { font-weight: 600; }
 .table td { color: #0b1f3a; }
-
+.wide-card {
+    min-height: calc(100vh - 200px);
+}
 .badge {
     font-size: 12px;
     padding: 4px 8px;
